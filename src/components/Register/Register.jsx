@@ -2,6 +2,9 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { Link } from "react-router-dom";
+
+
 
 const Register = () => {
 
@@ -52,7 +55,7 @@ const Register = () => {
         <div className="mt-20">
             <h2 className="text-3xl font-bold text-center my-10">Please Register</h2>
             <div className="flex justify-center">
-                <form onSubmit={handleRegister} className=" w-full lg:w-1/3">
+                <form onSubmit={handleRegister} className=" w-full lg:w-2/4  bg-base-200 px-10 pt-14 rounded-xl">
                     <input type="email" name="email" placeholder="Email Address" className="input input-bordered w-full mb-3" required /> <br />
 
                     <input type={showPassword ? "text" : "password"}
@@ -70,19 +73,26 @@ const Register = () => {
                     <label className="ml-3" htmlFor="terms">Accept our terms and conditions</label>
 
                     <div className="flex justify-center">
-                        <input className="my-5 btn btn-neutral" type="submit" value="Register" />
+                        <input className="my-5 btn btn-primary w-full" type="submit" value="Register" />
                     </div>
+
+
+                    <div>
+                        {
+                            registerError && <p className="text-red-400 text-xl font-bold text-center">{registerError}</p>
+                        }
+                    </div>
+                    <div>
+                        {
+                            success && <p className="text-green-500 text-xl font-bold text-center">{success}</p>
+                        }
+                    </div>
+
+                    <div className="flex justify-center mt-3 mb-10">
+                        Already have an account? <Link className="ml-2 text-blue-600 underline" to='/login'>Login Here</Link>
+                    </div>
+
                 </form>
-            </div>
-            <div>
-                {
-                    registerError && <p className="text-red-400 text-2xl font-bold text-center">{registerError}</p>
-                }
-            </div>
-            <div>
-                {
-                    success && <p className="text-green-500 text-2xl font-bold text-center">{success}</p>
-                }
             </div>
         </div>
     );
