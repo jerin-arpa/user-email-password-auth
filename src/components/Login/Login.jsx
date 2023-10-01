@@ -8,6 +8,7 @@ const Login = () => {
     const [success, setSuccess] = useState('');
     const emailRef = useRef(null);
 
+
     const handleLogIn = e => {
         e.preventDefault();
         const email = e.target.email.value;
@@ -22,7 +23,12 @@ const Login = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then(result => {
                 console.log(result.user)
-                setSuccess('User Logged in successfully')
+                if (result.user.emailVerified) {
+                    setSuccess('User Logged in successfully');
+                }
+                else {
+                    alert('Please verify your email address')
+                }
             })
             .error(error => {
                 console.error(error);
@@ -64,13 +70,13 @@ const Login = () => {
                                 <label className="label">
                                     <span className="label-text">Email</span>
                                 </label>
-                                <input type="email" name="email" ref={emailRef} placeholder="email" className="input input-bordered" />
+                                <input type="email" name="email" ref={emailRef} placeholder="Enter your email" className="input input-bordered" />
                             </div>
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">Password</span>
                                 </label>
-                                <input type="password" name="password" placeholder="password" className="input input-bordered" />
+                                <input type="password" name="password" placeholder="Enter your password" className="input input-bordered" />
                                 <label className="label">
                                     <a onClick={handleForgetPassword} href="#" className="label-text-alt link link-hover">Forgot password?</a>
                                 </label>

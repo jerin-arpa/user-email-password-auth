@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -15,10 +15,11 @@ const Register = () => {
 
     const handleRegister = e => {
         e.preventDefault();
+        const name = e.target.name.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
         const accepted = e.target.terms.checked;
-        console.log(email, password, accepted);
+        console.log(name, email, password, accepted);
 
 
         // reset error
@@ -44,6 +45,26 @@ const Register = () => {
             .then(result => {
                 console.log(result.user);
                 setSuccess('Account created successfully');
+
+
+                // update profile
+                updateProfile(result.user, {
+                    displayName: name,
+                    photoURL: "https://example.com/jane-q-user/profile.jpg",
+                })
+                    .then(() => {
+                        console.log('Profile Updated')
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+
+
+                // send verification email
+                sendEmailVerification(result.user)
+                    .then(() => {
+                        alert('Please check your email and verify your account');
+                    })
             })
             .catch(error => {
                 console.error(error);
@@ -56,10 +77,11 @@ const Register = () => {
             <h2 className="text-3xl font-bold text-center my-10">Please Register</h2>
             <div className="flex justify-center">
                 <form onSubmit={handleRegister} className=" w-full lg:w-2/4  bg-base-200 px-10 pt-14 rounded-xl">
-                    <input type="email" name="email" placeholder="Email Address" className="input input-bordered w-full mb-3" required /> <br />
+                    <input type="name" name="name" placeholder="Enter your name" className="input input-bordered w-full mb-3" required /> <br />
+                    <input type="email" name="email" placeholder="Enter your email" className="input input-bordered w-full mb-3" required /> <br />
 
                     <input type={showPassword ? "text" : "password"}
-                        name="password" placeholder="Your Password" className="input input-bordered w-full" required />
+                        name="password" placeholder="Enter your Password" className="input input-bordered w-full" required />
                     <div className="relative flex justify-end">
                         <span onClick={() => setShowPassword(!showPassword)} className="absolute bottom-4 right-4">
                             {
