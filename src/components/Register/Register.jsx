@@ -14,7 +14,8 @@ const Register = () => {
         e.preventDefault();
         const email = e.target.email.value;
         const password = e.target.password.value;
-        console.log(email, password);
+        const accepted = e.target.terms.checked;
+        console.log(email, password, accepted);
 
 
         // reset error
@@ -28,6 +29,10 @@ const Register = () => {
         }
         else if (!/[A-Z]/.test(password)) {
             setRegisterError('Your password should have one uppercase character');
+            return;
+        }
+        else if (!accepted) {
+            setRegisterError('Please accept our terms and conditions');
             return;
         }
 
@@ -51,9 +56,9 @@ const Register = () => {
                     <input type="email" name="email" placeholder="Email Address" className="input input-bordered w-full mb-3" required /> <br />
 
                     <input type={showPassword ? "text" : "password"}
-                        name="password" placeholder="Your Password" className="input input-bordered w-full mb-8" required />
+                        name="password" placeholder="Your Password" className="input input-bordered w-full" required />
                     <div className="relative flex justify-end">
-                        <span onClick={() => setShowPassword(!showPassword)} className="absolute bottom-12 right-4">
+                        <span onClick={() => setShowPassword(!showPassword)} className="absolute bottom-4 right-4">
                             {
                                 showPassword ? <FaEyeSlash></FaEyeSlash> : <FaEye></FaEye>
                             }
@@ -61,8 +66,11 @@ const Register = () => {
                     </div>
                     <br />
 
+                    <input type="checkbox" name="terms" id="terms" />
+                    <label className="ml-3" htmlFor="terms">Accept our terms and conditions</label>
+
                     <div className="flex justify-center">
-                        <input className="mb-5 btn btn-neutral" type="submit" value="Register" />
+                        <input className="my-5 btn btn-neutral" type="submit" value="Register" />
                     </div>
                 </form>
             </div>
